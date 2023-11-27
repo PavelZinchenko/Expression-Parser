@@ -8,6 +8,12 @@ namespace CodeWriter.ExpressionParser
 {
     public delegate T Expression<out T>();
 
+    public interface IFunction<T>
+    {
+        int ArgumentCount { get; }
+        Expression<T> Invoke(List<Expression<T>> arguments);
+    }
+
     public abstract class ExpressionParser<T>
     {
         private readonly Dictionary<string, ExprBuilder> _builderCached = new Dictionary<string, ExprBuilder>();
@@ -105,12 +111,13 @@ namespace CodeWriter.ExpressionParser
 
             var function =
             (
-                from name in Letter.AtLeastOnce().Text()
+                from nameHead in Letter.Once().Text()
+                from nameTail in LetterOrDigit.Many().Text()
                 from lparen in Char('(')
                 // ReSharper disable once AccessToModifiedClosure
                 from expr in Ref(() => expression).DelimitedBy(Char(',').Token())
                 from rparen in Char(')')
-                select MakeFunction(name, expr.ToList())
+                select MakeFunction(nameHead + nameTail, expr.ToList())
             ).Named("function");
 
             var factor =
@@ -246,8 +253,25 @@ namespace CodeWriter.ExpressionParser
                         };
                     };
 
-                default: throw new FunctionNotDefinedException(name, "Unknown name");
+                default:
+                    return MakeExternalFunction(name, parameterBuilders);
             }
+
+            ExprBuilder MakeExternalFunction(string name, List<ExprBuilder> parameterBuilders)
+            {
+                return context =>
+                {
+                    var func = context.GetFunction(name);
+                    if (func.ArgumentCount != parameterBuilders.Count)
+                        throw new FunctionNotDefinedException(name, "Wrong parameters count");
+
+                    var inner = new List<Expression<T>>();
+                    for (var i = 0; i < parameterBuilders.Count; i++)
+                        inner.Add(parameterBuilders[i].Invoke(context));
+
+                    return func.Invoke(inner);
+                };
+}
 
             ExprBuilder MakeFunction1(Func<T, T> func)
             {
@@ -342,14 +366,17 @@ namespace CodeWriter.ExpressionParser
     {
         private readonly ExpressionContext<T> _parent;
         private readonly Func<string, Expression<T>> _unregisteredVariableResolver;
+        private readonly Func<string, IFunction<T>> _functionResolver;
 
         private readonly Dictionary<string, Expression<T>> _variables = new Dictionary<string, Expression<T>>();
 
         public ExpressionContext(ExpressionContext<T> parent = null,
-            Func<string, Expression<T>> unregisteredVariableResolver = null)
+            Func<string, Expression<T>> unregisteredVariableResolver = null,
+            Func<string, IFunction<T>> functionResolver = null)
         {
             _parent = parent;
             _unregisteredVariableResolver = unregisteredVariableResolver;
+            _functionResolver = functionResolver;
         }
 
         public void RegisterVariable(string name, Expression<T> value)
@@ -360,6 +387,15 @@ namespace CodeWriter.ExpressionParser
             }
 
             _variables.Add(name, value);
+        }
+
+        public IFunction<T> GetFunction(string name)
+        {
+            var function = _functionResolver?.Invoke(name);
+            if (function == null)
+                throw new FunctionNotDefinedException(name, "Unknown name");
+
+            return function;
         }
 
         public Expression<T> GetVariable(string name, bool nullIsOk = false)
