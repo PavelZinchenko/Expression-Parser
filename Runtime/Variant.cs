@@ -1,4 +1,5 @@
 using System;
+using System.Globalization;
 using UnityEngine;
 
 namespace CodeWriter.ExpressionParser
@@ -46,9 +47,9 @@ namespace CodeWriter.ExpressionParser
 
         public static Variant Parse(string input)
         {
-            if (int.TryParse(input, out int intValue))
+            if (int.TryParse(input, NumberStyles.Any, CultureInfo.InvariantCulture, out int intValue))
                 return new Variant(intValue);
-            else if (float.TryParse(input, out float floatValue))
+            else if (float.TryParse(input, NumberStyles.Any, CultureInfo.InvariantCulture, out float floatValue))
                 return new Variant(floatValue);
             else if (bool.TryParse(input, out bool boolValue))
                 return new Variant(boolValue);
