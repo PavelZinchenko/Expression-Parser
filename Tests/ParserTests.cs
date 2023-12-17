@@ -89,8 +89,8 @@ namespace CodeWriter.ExpressionParser.Tests
         [TestCase("1 OR 0", ExpectedResult = 1)]
         [TestCase("1 OR 1", ExpectedResult = 1)]
         // Compare
-        [TestCase("1 = 1", ExpectedResult = 1)]
-        [TestCase("1 = 2", ExpectedResult = 0)]
+        [TestCase("1 == 1", ExpectedResult = 1)]
+        [TestCase("1 == 2", ExpectedResult = 0)]
         [TestCase("1 != 1", ExpectedResult = 0)]
         [TestCase("1 != 2", ExpectedResult = 1)]
         [TestCase("1 < 2", ExpectedResult = 1)]
