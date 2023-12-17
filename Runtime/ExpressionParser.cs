@@ -91,7 +91,7 @@ namespace CodeWriter.ExpressionParser
             var div = Operator("/", Div);
             var mod = Operator("%", Mod);
             var pow = Operator("^", Pow);
-            var eq = Operator("=", Equal);
+            var eq = Operator("==", Equal);
             var neq = Operator("!=", NotEqual);
             var and = Operator("AND", And);
             var or = Operator("OR", Or);
@@ -391,7 +391,7 @@ namespace CodeWriter.ExpressionParser
 
         public IFunction<T> GetFunction(string name)
         {
-            var function = _functionResolver?.Invoke(name);
+            var function = _functionResolver?.Invoke(name) ?? _parent?.GetFunction(name);
             if (function == null)
                 throw new FunctionNotDefinedException(name, "Unknown name");
 
