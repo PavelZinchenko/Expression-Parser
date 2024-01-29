@@ -29,6 +29,15 @@ namespace CodeWriter.ExpressionParser
         protected override Variant Ceiling(Variant v) => Variant.Ceil(v);
         protected override Variant Floor(Variant v) => Variant.Floor(v);
         protected override Variant Log10(Variant v) => throw new NotImplementedException();
+        protected override Variant Random(Variant minInclusive, Variant maxExclusive)
+        {
+            return UnityEngine.Random.Range(minInclusive.AsSingle, maxExclusive.AsSingle);
+        }
+
+        protected override Variant RandomInt(Variant minInclusive, Variant maxExclusive)
+        {
+            return UnityEngine.Random.Range(minInclusive.AsInt, maxExclusive.AsInt);
+        }
 
         protected override Variant Log(Variant v, Variant newBase) => throw new NotImplementedException();
     }

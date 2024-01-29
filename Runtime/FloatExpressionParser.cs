@@ -32,6 +32,15 @@ namespace CodeWriter.ExpressionParser
         protected override float Ceiling(float v) => (float) Math.Ceiling(v);
         protected override float Floor(float v) => (float) Math.Floor(v);
         protected override float Log10(float v) => (float) Math.Log10(v);
+        protected override float Random(float minInclusive, float maxExclusive)
+        {
+            return UnityEngine.Random.Range(minInclusive, maxExclusive);
+        }
+
+        protected override float RandomInt(float minInclusive, float maxExclusive)
+        {
+            return UnityEngine.Random.Range((int) minInclusive, (int) maxExclusive);
+        }
 
         protected override float Log(float v, float newBase) => (float) Math.Log(v, newBase);
     }
