@@ -31,6 +31,12 @@ namespace CodeWriter.ExpressionParser
         protected override int Ceiling(int v) => throw new NotImplementedException();
         protected override int Floor(int v) => throw new NotImplementedException();
         protected override int Log10(int v) => throw new NotImplementedException();
+        protected override int Random(int minInclusive, int maxExclusive)
+        {
+            return UnityEngine.Random.Range(minInclusive, maxExclusive);
+        }
+
+        protected override int RandomInt(int minInclusive, int maxExclusive) => Random(minInclusive, maxExclusive);
 
         protected override int Log(int v, int newBase) => throw new NotImplementedException();
     }

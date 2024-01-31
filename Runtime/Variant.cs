@@ -175,6 +175,28 @@ namespace CodeWriter.ExpressionParser
             if (value._type == ValueType.TypeInt) return value;
             return Mathf.FloorToInt(value.AsSingle);
         }
+        
+        public static Variant Pow(Variant a, Variant b)
+        {
+            var pow = Mathf.Pow(a.AsSingle, b.AsSingle);
+            // Return fraction if either base or power is fractional, or the result is outside of float precision
+            // (see https://stackoverflow.com/a/3793950)
+            if (a._type == ValueType.TypeSingle || b._type == ValueType.TypeSingle || pow < -16777217 || pow > 16777217)
+                return pow; 
+            return (int) pow;
+        }
+        
+        public static Variant Log10(Variant value)
+        {
+            // Logarithm results are almost always decimal, so just convert everything to float
+            return Mathf.Log10(value.AsSingle);
+        }
+        
+        public static Variant Log(Variant value, Variant newBase)
+        {
+            // Logarithms are almost always decimal, so just convert everything to float
+            return Mathf.Log(value.AsSingle, newBase.AsSingle);
+        }
 
         public override string ToString()
         {

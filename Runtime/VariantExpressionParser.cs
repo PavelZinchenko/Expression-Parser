@@ -1,4 +1,5 @@
 using System;
+using UnityEngine;
 
 namespace CodeWriter.ExpressionParser
 {
@@ -17,7 +18,7 @@ namespace CodeWriter.ExpressionParser
         protected override Variant Mul(Variant a, Variant b) => a * b;
         protected override Variant Div(Variant a, Variant b) => a / b;
         protected override Variant Mod(Variant a, Variant b) => a % b;
-        protected override Variant Pow(Variant a, Variant b) => throw new NotImplementedException();
+        protected override Variant Pow(Variant a, Variant b) => Variant.Pow(a, b);
         protected override Variant Equal(Variant a, Variant b) => a == b;
         protected override Variant NotEqual(Variant a, Variant b) => a != b ? 1 : 0;
         protected override Variant LessThan(Variant a, Variant b) => a < b ? 1 : 0;
@@ -28,8 +29,17 @@ namespace CodeWriter.ExpressionParser
         protected override Variant Round(Variant v) => Variant.Round(v);
         protected override Variant Ceiling(Variant v) => Variant.Ceil(v);
         protected override Variant Floor(Variant v) => Variant.Floor(v);
-        protected override Variant Log10(Variant v) => throw new NotImplementedException();
+        protected override Variant Log10(Variant v) => Variant.Log10(v);
+        protected override Variant Random(Variant minInclusive, Variant maxExclusive)
+        {
+            return UnityEngine.Random.Range(minInclusive.AsSingle, maxExclusive.AsSingle);
+        }
 
-        protected override Variant Log(Variant v, Variant newBase) => throw new NotImplementedException();
+        protected override Variant RandomInt(Variant minInclusive, Variant maxExclusive)
+        {
+            return UnityEngine.Random.Range(minInclusive.AsInt, maxExclusive.AsInt);
+        }
+
+        protected override Variant Log(Variant v, Variant newBase) => Variant.Log(v, newBase);
     }
 }

@@ -179,6 +179,9 @@ namespace CodeWriter.ExpressionParser
         protected abstract T Ceiling(T v);
         protected abstract T Log10(T v);
 
+        protected abstract T Random(T minInclusive, T maxExclusive);
+        protected abstract T RandomInt(T minInclusive, T maxExclusive);
+
         protected virtual T Log(T v, T newBase) => Div(Log10(v), Log10(newBase));
 
         private T Not(T v) => IsTrue(v) ? False : True;
@@ -213,6 +216,12 @@ namespace CodeWriter.ExpressionParser
                     return parameterBuilders.Count == 2
                         ? MakeBinary(Log, parameterBuilders[0], parameterBuilders[1])
                         : MakeFunction1(Log10);
+                
+                case "RANDOM":
+                    return MakeFunction2(Random);
+                
+                case "RANDOM_INT":
+                    return MakeFunction2(RandomInt);
 
                 case "MIN":
                     return MakeFunctionFold(Min);
@@ -285,6 +294,16 @@ namespace CodeWriter.ExpressionParser
                     var inner = parameterBuilders[0].Invoke(context);
                     return () => func(inner.Invoke());
                 };
+            }
+            
+            ExprBuilder MakeFunction2(BinaryFunc func)
+            {
+                if (parameterBuilders.Count != 2)
+                {
+                    throw new FunctionNotDefinedException(name, "Wrong parameters count");
+                }
+
+                return MakeBinary(func, parameterBuilders[0], parameterBuilders[1]);
             }
 
             ExprBuilder MakeFunctionFold(Func<T, T, T> func)
