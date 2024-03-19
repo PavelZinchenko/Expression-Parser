@@ -27,10 +27,26 @@ namespace CodeWriter.ExpressionParser
         protected override int GreaterThan(int a, int b) => a > b ? 1 : 0;
         protected override int GreaterThanOrEqual(int a, int b) => a >= b ? 1 : 0;
         protected override bool IsTrue(int v) => v != 0;
-        protected override int Round(int v) => throw new NotImplementedException();
-        protected override int Ceiling(int v) => throw new NotImplementedException();
-        protected override int Floor(int v) => throw new NotImplementedException();
+        protected override int Round(int v) => v;
+        protected override int Ceiling(int v) => v;
+        protected override int Floor(int v) => v;
         protected override int Log10(int v) => throw new NotImplementedException();
+        protected override int Sin(int v) => throw new NotImplementedException();
+
+        protected override int Cos(int v) => throw new NotImplementedException();
+
+        protected override int Tan(int v) => throw new NotImplementedException();
+
+        protected override int Atan(int v) => throw new NotImplementedException();
+        
+        protected override int Atan2(int x, int y) => throw new NotImplementedException();
+        protected override int Rad2Deg(int v) => throw new NotImplementedException();
+        protected override int Deg2Rad(int v) => throw new NotImplementedException();
+
+        protected override int Abs(int v) => Math.Abs(v);
+
+        protected override int Sign(int v) => Math.Sign(v);
+
         protected override int Random(int minInclusive, int maxExclusive)
         {
             return UnityEngine.Random.Range(minInclusive, maxExclusive);

@@ -197,6 +197,23 @@ namespace CodeWriter.ExpressionParser
             // Logarithms are almost always decimal, so just convert everything to float
             return Mathf.Log(value.AsSingle, newBase.AsSingle);
         }
+        
+        // Trigonometric functions are almost always decimal, so just convert everything to float
+        public static Variant Sin(Variant value) => Mathf.Sin(value.AsSingle);
+        public static Variant Cos(Variant value) => Mathf.Cos(value.AsSingle);
+        public static Variant Tan(Variant value) => Mathf.Tan(value.AsSingle);
+        public static Variant Atan(Variant value) => Mathf.Atan(value.AsSingle);
+        public static Variant Atan2(Variant x, Variant y) => Mathf.Atan2(x.AsSingle, y.AsSingle);
+        public static Variant Abs(Variant value)
+        {
+            if (value._type == ValueType.TypeInt) return Math.Abs(value._intValue);
+            return Mathf.Abs(value._singleValue);
+        }
+        public static Variant Sign(Variant value)
+        {
+            if (value._type == ValueType.TypeInt) return Math.Sign(value._intValue);
+            return Mathf.Sign(value._singleValue);
+        }
 
         public override string ToString()
         {

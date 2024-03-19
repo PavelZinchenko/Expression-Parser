@@ -30,6 +30,18 @@ namespace CodeWriter.ExpressionParser
         protected override Variant Ceiling(Variant v) => Variant.Ceil(v);
         protected override Variant Floor(Variant v) => Variant.Floor(v);
         protected override Variant Log10(Variant v) => Variant.Log10(v);
+        protected override Variant Sin(Variant v) => Variant.Sin(v);
+        protected override Variant Cos(Variant v) => Variant.Cos(v);
+        protected override Variant Tan(Variant v) => Variant.Tan(v);
+        protected override Variant Atan(Variant v) => Variant.Atan(v);
+        protected override Variant Atan2(Variant x, Variant y) => Variant.Atan2(x, y);
+        protected override Variant Rad2Deg(Variant v) => v.AsSingle * Mathf.Rad2Deg;
+        protected override Variant Deg2Rad(Variant v) => v.AsSingle * Mathf.Deg2Rad;
+
+        protected override Variant Abs(Variant v) => Variant.Abs(v);
+
+        protected override Variant Sign(Variant v) => Variant.Sign(v);
+
         protected override Variant Random(Variant minInclusive, Variant maxExclusive)
         {
             return UnityEngine.Random.Range(minInclusive.AsSingle, maxExclusive.AsSingle);
