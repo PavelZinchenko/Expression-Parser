@@ -178,6 +178,28 @@ namespace CodeWriter.ExpressionParser
         protected abstract T Floor(T v);
         protected abstract T Ceiling(T v);
         protected abstract T Log10(T v);
+        protected abstract T Sin(T v);
+        protected abstract T Cos(T v);
+        protected abstract T Tan(T v);
+        protected abstract T Atan(T v);
+        protected abstract T Atan2(T x, T y);
+        /// <summary>
+        /// Converts value in radians to value in degrees
+        /// </summary>
+        protected abstract T Rad2Deg(T v);
+        /// <summary>
+        /// Converts value in degrees to value in radians
+        /// </summary>
+        protected abstract T Deg2Rad(T v);
+        /// <summary>
+        /// Calculates the absolute value
+        /// </summary>
+        protected abstract T Abs(T v);
+        /// <summary>
+        /// Calculates the sign of the value
+        /// </summary>
+        /// <returns>-1 for negative values, 0 for zero, and 1 for positive values</returns>
+        protected abstract T Sign(T v);
 
         protected abstract T Random(T minInclusive, T maxExclusive);
         protected abstract T RandomInt(T minInclusive, T maxExclusive);
@@ -216,6 +238,33 @@ namespace CodeWriter.ExpressionParser
                     return parameterBuilders.Count == 2
                         ? MakeBinary(Log, parameterBuilders[0], parameterBuilders[1])
                         : MakeFunction1(Log10);
+                
+                case "SIN":
+                    return MakeFunction1(Sin);
+                
+                case "COS":
+                    return MakeFunction1(Cos);
+                
+                case "TAN":
+                    return MakeFunction1(Tan);
+                
+                case "ATAN":
+                    return MakeFunction1(Atan);
+                
+                case "ATAN2":
+                    return MakeFunction2(Atan2);
+                
+                case "RAD2DEG":
+                    return MakeFunction1(Rad2Deg);
+                
+                case "DEG2RAD":
+                    return MakeFunction1(Deg2Rad);
+                
+                case "ABS":
+                    return MakeFunction1(Abs);
+                
+                case "SIGN":
+                    return MakeFunction1(Sign);
                 
                 case "RANDOM":
                     return MakeFunction2(Random);

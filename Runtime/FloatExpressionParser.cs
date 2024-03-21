@@ -32,6 +32,21 @@ namespace CodeWriter.ExpressionParser
         protected override float Ceiling(float v) => (float) Math.Ceiling(v);
         protected override float Floor(float v) => (float) Math.Floor(v);
         protected override float Log10(float v) => (float) Math.Log10(v);
+        protected override float Sin(float v) => Mathf.Sin(v);
+
+        protected override float Cos(float v) => Mathf.Cos(v);
+
+        protected override float Tan(float v) => Mathf.Tan(v);
+
+        protected override float Atan(float v) => Mathf.Atan(v);
+        protected override float Atan2(float x, float y) => Mathf.Atan2(x, y);
+        protected override float Rad2Deg(float v) => Mathf.Rad2Deg * v;
+        protected override float Deg2Rad(float v) => Mathf.Deg2Rad * v;
+
+        protected override float Abs(float v) => Mathf.Abs(v);
+
+        protected override float Sign(float v) => Mathf.Sign(v);
+
         protected override float Random(float minInclusive, float maxExclusive)
         {
             return UnityEngine.Random.Range(minInclusive, maxExclusive);
